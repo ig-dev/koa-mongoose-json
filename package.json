@@ -1,0 +1,19 @@
+{
+  "name": "koa-sequelize-json-api",
+  "version": "1.0.0",
+  "description": "koa.js middleware to provide JSON REST API access to sequelize models",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ig-dev/koa-sequelize-json.git"
+  },
+  "author": "Ignatius",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ig-dev/koa-sequelize-json/issues"
+  },
+  "homepage": "https://github.com/ig-dev/koa-sequelize-json#readme"
+}
