@@ -1,5 +1,5 @@
 {
-  "name": "koa-sequelize-json-api",
+  "name": "koa-sequelize-json",
   "version": "1.0.0",
   "description": "koa.js middleware to provide JSON REST API access to sequelize models",
   "main": "index.js",
@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/ig-dev/koa-sequelize-json/issues"
   },
-  "homepage": "https://github.com/ig-dev/koa-sequelize-json#readme"
+  "homepage": "https://github.com/ig-dev/koa-sequelize-json#readme",
+  "dependencies": {
+    "coffee-script": "^1.9.2",
+    "inflect": "^0.3.0",
+    "path-to-regexp": "^1.0.3"
+  }
 }
