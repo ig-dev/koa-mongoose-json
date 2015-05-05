@@ -3,7 +3,7 @@ inflect = require('inflect')
 pathToRegexp = require('path-to-regexp')
 _ = require('underscore')
 
-
+# usage: require('koa-sequelize-json')(app, {<options>})
 module.exports = (app, globalOptions = {})->
 
 	# Define defaults for global options
@@ -49,8 +49,11 @@ module.exports = (app, globalOptions = {})->
 			matches = url.exec(@path)
 			if not matches
 				return yield next
-			
-			# extract request ID parameter
+
+			# add sequelize model class to state
+			@state.model = model
+
+			# extract request ID parameter and add to state
 			parameter = @state.modelId = matches[1]
 			
 			# find request
