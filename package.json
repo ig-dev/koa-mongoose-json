@@ -19,6 +19,8 @@
   "dependencies": {
     "coffee-script": "^1.9.2",
     "inflect": "^0.3.0",
-    "path-to-regexp": "^1.0.3"
+    "koa-bodyparser": "^1.6.0",
+    "path-to-regexp": "^1.0.3",
+    "underscore": "^1.8.3"
   }
 }

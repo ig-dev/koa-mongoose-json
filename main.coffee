@@ -1,9 +1,12 @@
 # imports
 inflect = require('inflect')
 pathToRegexp = require('path-to-regexp')
+bodyParser = require('koa-bodyparser')()
 _ = require('underscore')
 
+
 # usage: require('koa-sequelize-json')(app, {<options>})
+# options: namespace, modelname, find, findAll, update, create, remove
 module.exports = (app, globalOptions = {})->
 
 	# Define defaults for global options
@@ -16,7 +19,11 @@ module.exports = (app, globalOptions = {})->
 	app.expose = (model, options = {}) ->
 
 		# Define defaults for model options
-		options = _.defaults(options, globalOptions)
+		options = _.defaults(options, globalOptions, {
+			
+			# generate default model name
+			modelName: inflect.pluralize(model.name.toLowerCase())
+		})
 		
 		# namespace must begin with slash	
 		if not options.namespace[..0] is '/'
@@ -26,11 +33,9 @@ module.exports = (app, globalOptions = {})->
 		if not options.namespace[-1..] is '/'
 			throw new Error('koa-seq-json: URL "namespace" option must end with a slash or be "/"')
 	
-		# generate model name
-		modelName = inflect.pluralize(model.name.toLowerCase())
-		
+				
 		# assemble model URL (/NS/modeName/<ID>)
-		url = "#{options.namespace}#{modelName}/:id?"
+		url = "#{options.namespace}#{options.modelName}/:id?"
 	
 		# convert to regular expression
 		url = pathToRegexp(url)
@@ -55,26 +60,26 @@ module.exports = (app, globalOptions = {})->
 
 			# extract request ID parameter and add to state
 			parameter = @state.modelId = matches[1]
-			
+
 			# find request
 			if @method is "GET" and parameter
-				 return yield options.find.call(@, next)
+				return yield options.find.call(@, next)
 
 			# find all request
 			if @method is "GET" and not parameter
-				 return yield options.findAll.call(@, next)
+				return yield options.findAll.call(@, next)
 
 			# update request
 			if @method is "PUT" and parameter
-				 return yield options.update.call(@, next)
+				return yield bodyParser.call(@, options.update.call(@, next))
 
 			# create request
 			if @method is "POST" and not parameter
-				 return yield options.create.call(@, next)
-			
+				return yield bodyParser.call(@, options.create.call(@, next))
+
 			# delete request
 			if @method is "DELETE" and not parameter
-				 return yield options.remove.call(@, next)
+				return yield options.remove.call(@, next)
 			
 			# no match found...
 			yield next
