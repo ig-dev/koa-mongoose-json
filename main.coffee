@@ -13,16 +13,19 @@ module.exports = (app, globalOptions = {})->
 	globalOptions = _.defaults(globalOptions, {
 		# the URL prefix for all API calls
 		namespace: '/'
+
+		# action generator functions - names will be called for queries with 'action' URL parameter
+		actions: {}
 	})
 	
 	# extend application instance with "expose" method to provide JSON API for models
-	app.expose = (model, options = {}) ->
+	app.expose = (Model, options = {}) ->
 
 		# Define defaults for model options
 		options = _.defaults(options, globalOptions, {
 			
 			# generate default model name
-			modelName: inflect.pluralize(model.name.toLowerCase())
+			modelName: inflect.pluralize(Model.modelName.toLowerCase())
 		})
 		
 		# namespace must begin with slash	
@@ -41,11 +44,12 @@ module.exports = (app, globalOptions = {})->
 		url = pathToRegexp(url)
 	
 		# create default request handlers
-		options.find   ?= find(model)
-		options.findAll ?= findAll(model)
-		options.update ?= update(model)
-		options.create ?= create(model)
-		options.remove ?= remove(model)
+		options.find   ?= find(Model)
+		options.findAll ?= findAll(Model)
+		options.update ?= update(Model)
+		options.create ?= create(Model)
+		options.remove ?= remove(Model)
+		options.query ?= query(Model)
 		
 		# associate URL handlers
 		app.use (next)->
@@ -56,7 +60,7 @@ module.exports = (app, globalOptions = {})->
 				return yield next
 
 			# add sequelize model class to state
-			@state.model = model
+			@state.Model = Model
 
 			# extract request ID parameter and add to state
 			parameter = @state.modelId = matches[1]
@@ -65,6 +69,10 @@ module.exports = (app, globalOptions = {})->
 			if @method is "GET" and parameter
 				return yield options.find.call(@, next)
 
+			# query or action request
+			else if @method is "GET" and @request.query
+				return yield (options.actions[@request.query.action] || options.query).call(@, next)
+				 
 			# find all request
 			if @method is "GET" and not parameter
 				return yield options.findAll.call(@, next)
@@ -85,22 +93,26 @@ module.exports = (app, globalOptions = {})->
 			yield next
 		
 
-find = (model)->
+find = (Model)->
 	return (next)->
 		yield next
 
-findAll = (model)->
+query = (Model)->
 	return (next)->
 		yield next
 
-update = (model)->
+findAll = (Model)->
 	return (next)->
 		yield next
 
-create = (model)->
+update = (Model)->
 	return (next)->
 		yield next
 
-remove = (model)->
+create = (Model)->
+	return (next)->
+		yield next
+
+remove = (Model)->
 	return (next)->
 		yield next

@@ -1,26 +1,35 @@
 {
-  "name": "koa-sequelize-json",
+  "name": "koa-mongoose-json",
   "version": "1.0.0",
-  "description": "koa.js middleware to provide JSON REST API access to sequelize models",
+  "description": "koa.js middleware to provide JSON REST API access to mongoose models",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ig-dev/koa-sequelize-json.git"
+    "url": "git+https://github.com/ig-dev/koa-mongoose-json.git"
   },
-  "author": "Ignatius",
+  "author": {
+    "name": "Ignatius"
+  },
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ig-dev/koa-sequelize-json/issues"
+    "url": "https://github.com/ig-dev/koa-mongoose-json/issues"
   },
-  "homepage": "https://github.com/ig-dev/koa-sequelize-json#readme",
+  "homepage": "https://github.com/ig-dev/koa-mongoose-json#readme",
   "dependencies": {
     "coffee-script": "^1.9.2",
     "inflect": "^0.3.0",
     "koa-bodyparser": "^1.6.0",
     "path-to-regexp": "^1.0.3",
     "underscore": "^1.8.3"
-  }
+  },
+  "readme": "# koa-sequelize-json\n",
+  "readmeFilename": "README.md",
+  "gitHead": "0752c8fd4aad9eda7f2aaa4b22bb6b79b74e977f",
+  "_id": "koa-mongoose-json@1.0.0",
+  "_shasum": "a6cd0ebe20c3a56c717b7bb0b5277fcc7aed760f",
+  "_from": "../../koa-mongoose-json",
+  "_resolved": "file:../../koa-mongoose-json"
 }
